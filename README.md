@@ -2,6 +2,14 @@
 
 A production-ready enterprise application for automating the generation of Service Review PowerPoint presentations. The platform extracts data via an automated CRM browser session, processes and aggregates Excel reports, generates publication-quality Matplotlib charts, and strictly maps data into an existing PowerPoint template.
 
+## Tech Stack
+* **Core Language:** Python 3.10+
+* **Data Processing & Analytics:** `pandas` (for SLA math & dataframe aggregation)
+* **Data Visualization:** `matplotlib` (for dynamic chart rendering)
+* **Document Generation:** `python-pptx` (for injecting data directly into native PPTX tables/shapes)
+* **Web Scraping / Browser Automation:** `requests` & `playwright` (for navigating CRM portals)
+* **Frontend Dashboard (Optional UI):** React 18, TypeScript, Vite, Tailwind CSS
+
 ## Architecture Flow
 
 The system orchestrates operations via dependency injection in `PPTAutomationPipeline`, decoupling browser automation from data processing and chart generation.
@@ -25,6 +33,26 @@ graph TD
     Charts --> PPT
     PPT --> Output[Final Presentation]
     Output --> Cleanup[Job Cleaner]
+```
+
+## Business Workflow (Data Pipeline)
+```mermaid
+sequenceDiagram
+    participant CSM as CRM System (UAT)
+    participant Engine as Automation Engine
+    participant Pandas as Data Processor
+    participant PPT as Template Engine
+    
+    Engine->>CSM: Authenticate via API/Browser
+    CSM-->>Engine: Customer List & Session Token
+    Engine->>CSM: Request Tickets, Invoices, Retention
+    CSM-->>Engine: Raw Excel / JSON Downloads
+    Engine->>Pandas: Load Data into DataFrames
+    Pandas-->>Pandas: Calculate SLA & Ageing Math
+    Pandas->>Engine: Aggregated Metrics
+    Engine->>PPT: Inject Variables & Save Charts
+    PPT-->>PPT: Generate Final .pptx
+    PPT-->>Engine: Completed Document
 ```
 
 ## Folder Structure
