@@ -95,3 +95,12 @@ The pipeline strictly maps dynamic CRM endpoints to specific PowerPoint slide te
 | **Retention Metrics** | Client Retention Stage Data | `process_retention.py` |
 
 *Note: Comprehensive field-level technical mappings between the exact CRM JSON endpoints and the PowerPoint placeholder variables are securely documented in the `/Slide_Mappings` directory.*
+
+---
+
+## 🏷️ Project Domain & Classification
+This project spans several high-demand enterprise software domains:
+* **Robotic Process Automation (RPA):** Automates human browser interactions to securely extract data from legacy CRM systems.
+* **Data Engineering & Processing:** Utilizes `pandas` to clean, transform, and aggregate thousands of rows of raw financial and technical data into mathematical metrics.
+* **Document Automation:** Programmatically manipulates binary `.pptx` XML structures to generate dynamic, presentation-ready business reports.
+* **Full-Stack Development:** Orchestrates backend Python pipelines with an optional React/TypeScript dashboard interface.
