@@ -1,0 +1,32 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+dist/
+downloads/
+.eggs/
+*.egg-info/
+
+# Data/Output
+downloads/*
+output/*
+!downloads/.gitkeep
+!output/.gitkeep
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Pytest
+.pytest_cache/

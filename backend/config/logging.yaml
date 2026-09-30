@@ -1,0 +1,49 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  json:
+    (): pythonjsonlogger.jsonlogger.JsonFormatter
+    format: "%(asctime)s %(levelname)s %(name)s %(message)s"
+  console:
+    format: "[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: console
+    stream: ext://sys.stdout
+  file:
+    class: logging.handlers.RotatingFileHandler
+    formatter: json
+    filename: "logs/app.log"
+    maxBytes: 10485760 
+    backupCount: 10
+    encoding: utf8
+
+loggers:
+  api:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  automation:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  processors:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  ppt:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  charts:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+
+root:
+  level: INFO
+  handlers: [console, file]

@@ -1,0 +1,210 @@
+<style>
+.ui-jqgrid .ui-jqgrid-bdiv {
+	position: relative; 
+	margin: 0; 
+	padding:0;
+	/*overflow: visible!important;*/
+	text-align:left; 
+}
+td.bootstrap_dropdown {
+    overflow:visible !important;
+    white-space: normal !important;
+}
+.ui-state-hover a, .ui-state-hover a:hover, .ui-state-hover a:link, .ui-state-hover a:visited {
+    color: #333;
+}
+.field-lbl{
+	font-weight: 600;
+  	margin-bottom: 4px;
+}
+#gview_client_aging_mst_v2_grid .ui-jqgrid-htable th div {
+  height: 33px;
+  font-weight: bold;  
+}
+#gview_client_aging_mst_v2_grid .ui-jqgrid-labels{
+	height:55px;
+}
+#gview_client_aging_mst_v2_grid .ui-widget-header {
+  background-image: none;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+</style>
+<script type="text/javascript">
+ 
+jQuery().ready(function (){ 
+	jQuery("#client_aging_mst_v2_grid").jqGrid({
+		url:"http://27.54.160.8/devops/uatPortal/index.php/client_aging_mst_v2/loadData", 
+		datatype: "json",
+		colNames:['ID','Party Name','Client ID','Service ID','Active <br>/Terminated','Inv Ref. No.','Invoice Date','Invoice <br>From Date','Invoice <br> To Date','Opening','Pending','Dr','Cr','Net','First Bill','Ageing <br> Criteria','Voice Bill','RA','CSM','ACC.Mgr.','Business Category', 'Cluster Head','Business Head','Zone'],
+		colModel:[
+			{name:"id",index:"id",hidden:true, width:90, jsonmap:"id"},
+			{name:"party_name",index:"party_name",hidden:false, width:200, jsonmap:"party_name"},
+			{name:"client_code",index:"client_code",hidden:false, width:80, jsonmap:"client_code"},
+			{name:"service_code",index:"service_code",hidden:false, width:80, jsonmap:"service_code"},
+			{name:"status2",index:"status2",hidden:false, width:80, jsonmap:"status2"},
+			{name:"invoice_no",index:"invoice_no",hidden:false, width:120, jsonmap:"invoice_no"},
+			{name:"bill_date",index:"bill_date",hidden:false, width:90, jsonmap:"bill_date"},
+			{name:"from_date",index:"from_date",hidden:false, width:90, jsonmap:"from_date"},
+			{name:"to_date",index:"to_date",hidden:false, width:90, jsonmap:"to_date"},
+			{name:"opening",index:"opening",hidden:false, width:100, jsonmap:"opening"},
+			{name:"pending",index:"pending",hidden:false, width:100, jsonmap:"pending"},
+			{name:"dr",index:"dr",hidden:false, width:90, jsonmap:"dr"},
+			{name:"cr",index:"cr",hidden:false, width:90, jsonmap:"cr"},
+			{name:"net",index:"net",hidden:false, width:90, jsonmap:"net"},
+			{name:"first_bill",index:"first_bill",hidden:false, width:90, jsonmap:"first_bill"},
+			{name:"ageing_criteria",index:"ageing_criteria",hidden:false, width:90, jsonmap:"ageing_criteria"},			
+			{name:"voice_bill",index:"voice_bill",hidden:false, width:90, jsonmap:"voice_bill"},			
+			{name:"ra_person_id",index:"ra_person_id",hidden:false, width:130, jsonmap:"ra_person_id"},			
+			{name:"csm_person_id",index:"csm_person_id",hidden:false, width:130, jsonmap:"csm_person_id"},			
+			{name:"account_manager_id",index:"account_manager_id",hidden:false, width:130, jsonmap:"account_manager_id"},			
+			{name:"direct_indirect",index:"direct_indirect",hidden:false, width:100, jsonmap:"direct_indirect"},			
+			{name:"cluster_head",index:"cluster_head",hidden:false, width:100, jsonmap:"cluster_head"},
+			{name:"bh",index:"bh",hidden:false, width:100, jsonmap:"bh"},	
+			{name:"zone_name",index:"zone_name",hidden:false, width:100, jsonmap:"zone_name"},		
+		],
+		scroll: false,
+		rowNum:20,
+		height: 500,
+		rownumbers: true,
+		autowidth: true,
+		shrinkToFit: false,
+		rowList:[10,20,30,50,100],
+		pager: jQuery("#client_aging_mst_v2_pager"),
+		sortname: "id",
+		viewrecords: true,
+		multiselect: true, 
+		sortorder: "desc",
+		footerrow : false, 
+		userDataOnFooter : false, 
+		caption:"<span style='background-color: yellow;color: black;'>Client Ageing V2 - ( Effective Date : 24.05.2025 ) ",
+		editurl:"http://27.54.160.8/devops/uatPortal/index.php/client_aging_mst_v2/deleteData", 
+		jsonReader: { repeatitems : false, id: "0" },		
+	});
+	 
+	jQuery("#client_aging_mst_v2_grid").jqGrid("navGrid", "#client_aging_mst_v2_pager", {add:false, edit:false, del:false, search:false}, {}, {}, {}, {multipleSearch:false});
+
+	$(".select-chosen").chosen({width:"100%"});
+});
+function client_aging_mst_v2_grid_search()
+{
+	var duration 	= $("#client_aging_mst_v2_search_duration").val();
+	var client_id 	= $("#client_aging_mst_v2_search_client_id").val();
+	var ra_person_id 	= $("#client_aging_mst_v2_search_ra_person_id").val();
+	var csm_person_id 	= $("#client_aging_mst_v2_search_csm_person_id").val();
+	var account_manager_id 	= $("#client_aging_mst_v2_search_account_manager_id").val();
+	var business_head_id 	= $("#client_aging_mst_v2_search_business_head_id").val();
+	var direct_indirect 	= $("#client_aging_mst_v2_search_d_irect_ind_irect").val();
+
+	if(duration != null){
+		duration = duration.join("','");
+	}
+
+	jQuery("#client_aging_mst_v2_grid").jqGrid('setGridParam',{datatype:'json',postData:{ duration:duration,client_id:client_id,ra_person_id:ra_person_id,csm_person_id:csm_person_id,account_manager_id:account_manager_id,business_head_id:business_head_id,direct_indirect:direct_indirect,page:1}}).trigger("reloadGrid");
+}
+function client_aging_mst_v2_grid_export()
+{
+	var duration 	= $("#client_aging_mst_v2_search_duration").val();
+	var client_id 	= $("#client_aging_mst_v2_search_client_id").val();
+	var ra_person_id 	= $("#client_aging_mst_v2_search_ra_person_id").val();
+	var csm_person_id 	= $("#client_aging_mst_v2_search_csm_person_id").val();
+	var account_manager_id 	= $("#client_aging_mst_v2_search_account_manager_id").val();
+	var business_head_id 	= $("#client_aging_mst_v2_search_business_head_id").val();
+	var direct_indirect 	= $("#client_aging_mst_v2_search_d_irect_ind_irect").val();
+
+	if(duration != null){
+		duration = duration.join("','");
+	}
+
+	document.location = "http://27.54.160.8/devops/uatPortal/index.php/client_aging_mst_v2/loadData/?cmd=export&client_id="+client_id+"&duration="+duration+"&ra_person_id="+ra_person_id+"&csm_person_id="+csm_person_id+"&account_manager_id="+account_manager_id+"&business_head_id="+business_head_id+"&direct_indirect="+direct_indirect+"";
+}
+function client_aging_mst_v2_grid_clear()
+{
+	$("#client_aging_mst_v2_search_duration").val("").trigger("change.select2");
+	$("#client_aging_mst_v2_search_client_id").val("").trigger("change.select2");
+	$("#client_aging_mst_v2_search_ra_person_id").val("").trigger("change.select2");
+	$("#client_aging_mst_v2_search_csm_person_id").val("").trigger("change.select2");
+	$("#client_aging_mst_v2_search_account_manager_id").val("").trigger("change.select2");
+	$("#client_aging_mst_v2_search_business_head_id").val("").trigger("change.select2");
+	$("#client_aging_mst_v2_search_direct_indirect").val("").trigger("change.select2");
+
+	jQuery("#client_aging_mst_v2_grid").jqGrid('setGridParam',{datatype:'json',postData:{ duration:'',client_id:'',ra_person_id:'',csm_person_id:'',account_manager_id:'',business_head_id:'',direct_indirect:'',page:1}}).trigger("reloadGrid");
+}
+</script>
+<div id="client_aging_mst_v2_list_div"  class="row">
+	<div class="col-md-12" style="margin-bottom: 10px;">
+		<div class="form-group col-md-3">
+			<div class="field-lbl">Duration</div>
+			<select id="client_aging_mst_v2_search_duration" class="select2" placeholder="Ageing" multiple >
+				<option value='0-30' >0-30</option><option value='31-60' >31-60</option><option value='61-90' >61-90</option><option value='91-180' >91-180</option><option value='181-365' >181-365</option><option value='>365' >>365</option><option value='Apr-24' >Apr-24</option><option value='May-24' >May-24</option><option value='Jun-24' >Jun-24</option><option value='Jul-24' >Jul-24</option><option value='Aug-24' >Aug-24</option><option value='Sep-24' >Sep-24</option><option value='Oct-24' >Oct-24</option><option value='Nov-24' >Nov-24</option><option value='Dec-24' >Dec-24</option>			</select>
+		</div>
+		<div class="form-group col-md-2">
+			<div class="field-lbl">Client</div>
+			<select id="client_aging_mst_v2_search_client_id" ><option value="">Select Client</option></select>
+		</div>
+		<div class="form-group col-md-2">
+			<div class="field-lbl">RA</div>
+			<select id="client_aging_mst_v2_search_ra_person_id" class='select2' >
+				<option value="">Select RA</option>
+				<option value='275879'>Amar . Chaurasia</option><option value='47459'>Bhavna Neelesh Bhalla</option><option value='280553'>Bhavyaraj Krishnasinh Parmar</option><option value='338274'>Drashti Yashvantray Vaishnav</option><option value='55'>Falguni Shaileshbhai Pandya</option><option value='342003'>fgdgd fgf dfgf</option><option value='43764'>Hina Ashokbhai Parmar</option><option value='290628'>Kaushalendra Mahendrabhai Gajjar</option><option value='332545'>Kinjal Rajubhai Dadukiya</option><option value='290523'>Mansi Dilipbhai Acharya</option><option value='175008'>Minthel . Joshi</option><option value='305840'>Nandkishor Rajendra Singh Prajapati</option><option value='274105'>Pooja . Mehta</option><option value='297584'>Purvi Rajesh Vasu</option><option value='259511'>Rashmi Shantaram Kosti</option><option value='321494'>Shaili Kirit Vajani - RA</option><option value='305001'>Smith Manhar Patel - RA</option><option value='235'>Sonal Shivprakash Singh</option><option value='47192'>Sonali Anjan Sarkar</option><option value='357949'>Sudhir Maruti Ithape</option><option value='136787'>Vandana Jyotiba Patil</option><option value='153795'>Viji . Sumesh</option>			</select>
+		</div>
+		<div class="form-group col-md-2">
+			<div class="field-lbl">CSM</div>
+			<select id="client_aging_mst_v2_search_csm_person_id" class='select2' >
+				<option value="">Select CSM</option>
+				<option value='323760'>Aditya Satish Chaugule</option><option value='260416'>Ankita Goutam Mukherjee</option><option value='16'>Ashish Chandravadan Raval</option><option value='274647'>Ashish Vasant Wavade</option><option value='291048'>Avinash Premdas Sonawane</option><option value='277719'>Bhavna Neelesh Bhalla</option><option value='274651'>Gautam Arun Kumar Jha</option><option value='321394'>Girish Ramesh Chandane</option><option value='288871'>Gulshan Shyam Kishor Malvi</option><option value='308220'>Jay Ashvinkumar Trivedi</option><option value='173095'>Ketan . Sharma</option><option value='299002'>Manank Atulbhai Shah</option><option value='305071'>Manoj Maheshbhai Patel</option><option value='43251'>Megha Harishbhai Thanki</option><option value='43637'>Meghal Ashokbhai Patel</option><option value='275760'>Mitesh Shivjilal Kaladia</option><option value='236476'>Neha Sachin Bumb</option><option value='319860'>Nikhil Vinodchandra Shah</option><option value='281913'>Niraj Mandareshwar Mishra</option><option value='33826'>Niraj Lalluprasad Dixit</option><option value='29529'>Pranav Dipakbhai  Joshi</option><option value='169'>Rupal Rameshbhai Sumara</option><option value='314387'>Sanket Vilas Shelar</option><option value='306248'>Shehbaz Ainool Kuware</option><option value='36291'>Sunil Rameshbhai Sagathiya</option><option value='314397'>Vikram Namdev Vasavkar</option><option value='3817'>Yogesh Pravinbhai Valani</option>			</select>
+		</div>
+		<div class="form-group col-md-2">
+			<div class="field-lbl">BDM</div>
+			<select id="client_aging_mst_v2_search_account_manager_id"  class='select2'>
+				<option value="">Select BDM</option>
+				<option value="35878">Abdul B. Kothari</option><option value="1">Admin - Admin</option><option value="326169">Ajay Jai Bahadur Singh</option><option value="245914">Ajay Upendra Kumar</option><option value="219967">Akhilesh  Ramji Dwivedi</option><option value="145732">Amarnath Trilok Rai</option><option value="210368">Ambrish . Pathak</option><option value="270924">Amit . Kohli</option><option value="291362">Amit Sujit Biswas</option><option value="248806">Amulya Laxman Nayak</option><option value="317893">Arvind Pal Joginder Singh</option><option value="236870">Atanu Binay Das</option><option value="290599">Atanu Ramkrishna Dey</option><option value="20">Babu Vijay Romar</option><option value="237">Bhagirath Ajitsinh Parmar</option><option value="308211">Bhavesh Natvarlal Prajapati</option><option value="251">Biren Navinchandra Kotak</option><option value="144714">Bishnu Prasad Misro</option><option value="253255">Bubai Bipadtaran Chattopadhyay</option><option value="51618">Chirag Pravinchandra Shah</option><option value="6454">Demo  Enterprise</option><option value="341832">dev  ops</option><option value="277389">Devang Mahesh Ghatalia</option><option value="337167">Dharmesh Dineshchandra Trivedi</option><option value="49535">Dhaval  Ramniklal Solanki</option><option value="34588">Digvijaysinh Rameshbhai Babariya</option><option value="42818">Dilip Jeram Dama</option><option value="55">Falguni Shaileshbhai Pandya</option><option value="289453">Falguni Shaileshbhai Pandya - Sales</option><option value="315780">Farhan Akbarhusain Shaikh</option><option value="248">Gopal Arat Tran Nanda Krishna</option><option value="293564">Gowri Ramachandra Shankar</option><option value="288284">Harjinder Dharam Singh</option><option value="291325">Harshad Suhas Kheur</option><option value="304976">Hetal  Jatinbhai Dave</option><option value="58480">Hetal  Jatinbhai Dave</option><option value="39621">Himanshu Devendrakumar Dargarh</option><option value="208680">Ishwar . Arora </option><option value="197465">Jagdish . Makwana</option><option value="245889">Jagram Pitamber Yadav</option><option value="3797">Jatin Hasmukhbhai Rajyaguru</option><option value="249">Jawahar Babulal Tiwary</option><option value="6907">Jay Rameshbhai Pradhan</option><option value="323493">Jayesh Sudhir Mestry</option><option value="209796">Jitendra Singh Yadav</option><option value="212590">Jyothikumar Gopalan Nair</option><option value="298662">Karn Pratap Omprakash Singh</option><option value="285763">Kavita P Rana</option><option value="160053">Keyur Hareshkumar Joshi</option><option value="308223">Krishnan Sivaramakrishnan S</option><option value="295124">Madhavi M Pillai</option><option value="305048">Madhumita Goutam Karan</option><option value="226463">Madhurendra Kumar . Singh</option><option value="45254">Mahesh Satishbhai Vaghela</option><option value="326609">Manish Chandra Poshtiwala</option><option value="61064">Mehul Ranchodbhai Panchal</option><option value="303803">Mitesh Ishvarlal Prajapati</option><option value="261055">Mohan Naresh Shahu</option><option value="249073">Nabendu . Saha</option><option value="323278">Narender Poshetty Bodigam</option><option value="51939">Nihar  Dineshchandra Gandhi</option><option value="305257">Nilesh Suresh Mahadeshwar</option><option value="50116">Niraj kumar Omprakash Mishra</option><option value="172012">Nishandh .  K R</option><option value="132">Nishant Shivshankarlal Sharma</option><option value="249194">Nitish Sudhir Chandra Srivastava</option><option value="144715">Noopur Mohitkumar Patel</option><option value="246445">Palpandi Logaraj L</option><option value="218814">Pankaj Shankar Lal Geriya</option><option value="326512">Paresh Somjibhai Parmar</option><option value="53068">Paresh Shivabhai Patel</option><option value="264877">Paresh Goman Patel</option><option value="295501">Parth Dhirubhai Paraskar</option><option value="254">Pinkesh Narendrabhai Kotecha</option><option value="245487">Prabhat Ram Sharma</option><option value="295503">Pradeep Jiyalal Kumar</option><option value="166959">Pradip Gordhandas Lalvani</option><option value="28560">Pravin Shiv Narain  Rai</option><option value="300986">Pritam Pratip Ghosh</option><option value="293560">Puneet Raj Kumar Jadon</option><option value="34589">Punit Girishkumar Pandya</option><option value="176483">Raj Manojkumar Manojkumar Raval</option><option value="236103">Raja Akul Mukherjee</option><option value="310853">Raja Ram Mahendra Pratap Singh Singh</option><option value="209787">Rajat Kumar Guha</option><option value="288971">Rajeev Ranjeet Kumar Ranjan</option><option value="179480">Raju Jhinkan Kumar</option><option value="20939">Rajveer Bheru Singh</option><option value="31750">Rakesh Ramgopal Kashyap</option><option value="276147">Ram Mannu Yadav</option><option value="277044">Ramnik Nathabhai Vaza</option><option value="221015">Rani Padamakar Ingle</option><option value="242947">Ratnakar Aseervadam Gootam</option><option value="46300">Ravi Kishan Lal  Sharma</option><option value="257007">Ravi Kishan Galani</option><option value="305436">Ravi Kant Ramchandra Saxena</option><option value="252140">Ravinder Hari Chand Thakur</option><option value="293816">Rutva Akshat Shah</option><option value="308192">Sagar Dilip Walimbe</option><option value="290408">Samik Swapan Saha</option><option value="73808">Samrendra  RamBhar  Pathak </option><option value="258542">Sanjay Rishi Pal Kashyap</option><option value="240646">Sanjay Prem Narayan Saxena</option><option value="288352">Sankha Swapan Kumar Sen</option><option value="191724">Saurabh . Gupta</option><option value="292551">Saurabh Shiv Shankar Suman</option><option value="242277">Shailesh Shambhu Nath Thakur</option><option value="233609">Shakeel  Subhan Ali Ahmad</option><option value="290593">Shambhu Bishnu Singh</option><option value="315767">Sharukh Munuwar Khan</option><option value="277749">Shiv Narayana Kumar</option><option value="305049">Soumen Sangeet Mitra</option><option value="209985">Subodh Kumar Singh</option><option value="212206">Sundaresan KS Ramamoorthy R</option><option value="36291">Sunil Rameshbhai Sagathiya</option><option value="287953">Swapnil Madanlal Dave</option><option value="214564">Umesh . Karar</option><option value="197864">Umesh Kumar Satish Prakash Ganchle</option><option value="289517">Veeresham Naganna Pullaiahgari</option><option value="305839">Vikash Balmukund Gupta</option><option value="293137">Vishal Roshan Lal Thusu</option><option value="33715">Vivek Kumar Kaura</option><option value="230906">Waseem . Khan</option><option value="221100">Yashita Yogesh Naik</option><option value="270404">Yogesh Kantilal Panchal</option>			</select>
+		</div>
+		<div class="form-group col-md-2">
+			<div class="field-lbl">Business Head</div>
+			<select id="client_aging_mst_v2_search_business_head_id" class='select2' >
+				<option value="">Select Business Head</option>
+							</select>
+		</div>
+		<div class="form-group col-md-2">
+			<div class="field-lbl">Business Category</div>
+			<select id="client_aging_mst_v2_search_d_irect_ind_irect" class='select2' >
+				<option value="">Select Category</option>
+				<option value='Direct'>Direct</option><option value='Indirect'>Indirect</option><option value='government'>Government</option><option value='carrier'>Carrier</option><option value='EBU'>EBU</option><option value='TOP'>TOP</option><option value='SBU'>SBU</option><option value='BFSI'>BFSI</option><option value='ADI - Direct'>ADI - Direct</option><option value='ADI - Government'>ADI - Government</option><option value='ADI - Enabler'>ADI - Enabler</option><option value='Public Sector Cloud'>Public Sector Cloud</option><option value='FBU'>FBU</option><option value='EBU1'>EBU1</option><option value='SBU1'>SBU1</option>			</select>
+		</div>		
+		<div class="col-md-2"><div class="field-lbl">&nbsp;</div>
+			<button class="btn btn-primary" onclick="client_aging_mst_v2_grid_search()" ><i class="fa fa-search fa-fw"></i> Search</button>
+			&nbsp; <button class="btn btn-default" onclick="client_aging_mst_v2_grid_clear()" > Clear </button>
+			
+						&nbsp; <button class="btn btn-primary" onclick="client_aging_mst_v2_grid_export()" ><i class="fa fa-search fa-fw"></i> Export </button>
+					</div>
+	</div>
+	<div class="col-md-12">
+		<table id="client_aging_mst_v2_grid" class="jqgrid"></table> 
+	</div>
+	<div id="client_aging_mst_v2_pager"></div>
+</div>
+<div class="row"><div class="col-md-12" ><div class="block" id="client_aging_mst_v2_form_div" ></div></div></div>
+<script type="text/javascript">
+jQuery().ready(function (){ 
+	$(".select2").select2();
+
+	$("#client_aging_mst_v2_search_client_id").select2({
+		minimumInputLength :4,
+		ajax: {
+			url: 'http://27.54.160.8/devops/uatPortal/index.php/home/get_combo/?table=active_ent_clients&cmd=',
+			dataType: 'json',
+			data: function (params) { return { search: params.term }; }
+		}
+	});
+	/*$("#client_aging_mst_v2_search_account_manager_id").select2({
+		minimumInputLength :4,
+		ajax: {
+			url: 'http://27.54.160.8/devops/uatPortal/index.php/home/get_combo/?table=ent_acc_mgr&cmd=',
+			dataType: 'json',
+			data: function (params) { return { search: params.term }; }
+		}
+	});*/
+});
+</script>

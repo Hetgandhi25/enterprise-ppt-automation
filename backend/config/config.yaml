@@ -1,0 +1,16 @@
+app:
+  name: "Service Review PPT Generator"
+  version: "0.1.0"
+
+automation:
+  max_retries: 3
+  download_timeout_sec: 60
+  headless: true
+
+data_processing:
+  sla_target: 99.5
+  major_downtime_threshold_hours: 4.0
+
+retention:
+  downloads_days: 1
+  output_days: 3

@@ -1,0 +1,16 @@
+{
+  "colors": {
+    "primary": "#00509d",
+    "secondary": "#d62828",
+    "success": "#34a853",
+    "warning": "#fbbc04",
+    "danger": "#ea4335",
+    "background": "transparent",
+    "grid": "#e0e0e0",
+    "text": "#333333"
+  },
+  "fonts": {
+    "main": "Arial",
+    "headings": "Arial"
+  }
+}

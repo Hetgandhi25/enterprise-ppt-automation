@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mock CRM Portal</title>
+</head>
+<body>
+    <div id="login-container">
+        <h1>Login</h1>
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <button id="login-btn" onclick="login()">Login</button>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <h1>Dashboard - <span id="customer-name"></span></h1>
+        <button id="logout-btn" onclick="logout()">Logout</button>
+        
+        <div style="margin-top: 20px;">
+            <button id="download-inventory" onclick="downloadFile('Customer_Service_Report.xlsx')">Download Inventory</button>
+            <button id="download-sla" onclick="downloadFile('SLA_Report.xlsx')">Download SLA</button>
+            <button id="download-location-sla" onclick="downloadFile('Location_SLA_Report.xlsx')">Download Location SLA</button>
+            <button id="download-incidents" onclick="downloadFile('Incident_Report.xlsx')">Download Incidents</button>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('customer-name').innerText = "ASG India";
+        }
+        function logout() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+        }
+        function downloadFile(filename) {
+            // Mock file download > 1KB
+            const content = "Dummy content".repeat(100);
+            const blob = new Blob([content], { type: 'application/octet-stream' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

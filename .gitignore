@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv/
+venv/
+backend/venv/
+
+# Testing and Logging
+.coverage
+htmlcov/
+pytest_cache/
+.pytest_cache/
+logs/
+backend/logs/
+
+# Outputs and Generated Files
+backend/output/
+tmp/
+*.pptx
+*.xlsx
+!backend/tests/fixtures/*.xlsx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Root level scratch scripts and files created during development
+/*.py
+/*.html
+/*.txt
+/*.json
+/*.xlsx
+!README.md
+!.gitignore

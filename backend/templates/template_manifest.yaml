@@ -1,0 +1,113 @@
+template_file: Sample MBR PPT_Formatted.pptx
+version: '1.0'
+slides:
+  slide_1:
+    customer_name:
+      shape_id: text_29
+      dynamic: true
+    csm_block:
+      shape_id: text_37
+      fields:
+        csm_name:
+          paragraph: 0
+          prefix: 'By: '
+      dynamic: true
+  slide_2:
+    pass: true
+  slide_3:
+    mom_table:
+      shape_id: table_6
+      dynamic: true
+  slide_4:
+    overall_service_status:
+      shape_id: text_12
+      dynamic: true
+    service_request_trend:
+      shape_id: text_19
+      dynamic: true
+    customer_sentiment_csat:
+      shape_id: text_53
+      dynamic: true
+    customer_sentiment_nps:
+      shape_id: text_56
+      dynamic: true
+    action_taken:
+      shape_id: text_65
+      dynamic: true
+  slide_5:
+    customer_entities:
+      shape_id: text_10
+      dynamic: true
+    total_links:
+      shape_id: text_15
+      dynamic: true
+    inventory_table:
+      shape_id: table_22
+      dynamic: true
+  slide_6:
+    sla_trend_chart:
+      shape_id: chart_18
+      dynamic: true
+    service_request_chart:
+      shape_id: chart_19
+      dynamic: true
+  slide_7:
+    location_sla_chart:
+      shape_id: chart_12
+      dynamic: true
+  slide_8:
+    total_service_requests:
+      shape_id: text_102
+      dynamic: true
+    total_requests:
+      shape_id: text_96
+      dynamic: true
+    total_complaints:
+      shape_id: text_99
+      dynamic: true
+    complaints_chart:
+      shape_id: chart_93
+      dynamic: true
+    proactive_reactive:
+      shape_id: text_94
+      dynamic: true
+    issue_ishan_end_count:
+      shape_id: text_87
+      dynamic: true
+    issue_customer_end_count:
+      shape_id: text_81
+      dynamic: true
+  slide_9:
+    incident_table:
+      shape_id: table_10
+      dynamic: true
+  slide_10:
+    projects_table:
+      shape_id: table_39
+      dynamic: true
+  slide_11:
+    retention_table:
+      shape_id: table_31
+      dynamic: true
+  slide_12:
+    invoice_table:
+      shape_id: table_13
+      dynamic: true
+    total_outstanding:
+      shape_id: text_12
+      dynamic: true
+    open_invoices:
+      shape_id: text_17
+      dynamic: true
+  slide_13:
+    escalation_table:
+      shape_id: table_14
+      dynamic: true
+  slide_14:
+    customer_reference:
+      shape_id: text_26
+      dynamic: true
+      template: End-to-end support is required from the concerned team for any troubleshooting
+        raised by the {customer} team.
+  slide_15:
+    pass: true

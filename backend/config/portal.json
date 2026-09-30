@@ -1,0 +1,16 @@
+{
+    "selectors": {
+        "urls": {
+            "login": "file:///D:/CustPPTAutomation/backend/tests/fixtures/mock_portal.html"
+        },
+        "login": {
+            "username_input": "#username",
+            "password_input": "#password",
+            "submit_button": "#login-btn",
+            "logout_button": "#logout-btn"
+        },
+        "dashboard": {
+            "container": "#dashboard"
+        }
+    }
+}
