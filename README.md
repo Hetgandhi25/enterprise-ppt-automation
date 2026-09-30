@@ -14,7 +14,7 @@
 | **Data Processing** | `pandas` | Financial aggregation & SLA mathematics |
 | **Visualization** | `matplotlib` | Dynamic generation of trend charts & graphics |
 | **Document Engine**| `python-pptx` | Native PowerPoint manipulation & shape generation |
-| **Browser Automation**| `Playwright` & `requests` | Headless CRM navigation & secure API extraction |
+| **API Integration**| `requests` & internal REST clients | Secure authentication & extraction from live CRM endpoints |
 | **Frontend UI** | `React 18`, `TypeScript` | Dashboard for triggering & monitoring generation jobs |
 
 ## 🏗️ System Architecture
@@ -23,7 +23,7 @@ graph TD
     subgraph Input [Data Ingestion]
         CLI[Command Line / UI] --> Config[Credential Manager]
         Config --> CRM[Live UAT CRM Platform]
-        CRM -->|Headless Scrape & APIs| Downloader[Data Extractor]
+        CRM -->|RESTful API Calls| Downloader[Data Extractor]
     end
 
     subgraph Processing [Data Pipeline]
@@ -41,14 +41,14 @@ graph TD
 ## 🔄 Activity Flow Diagram
 ```mermaid
 flowchart TD
-    Start([Start Generation Job]) --> Auth{Authenticate CRM?}
+    Start([Start Generation Job]) --> Auth{Authenticate CRM API?}
     
     Auth -- Failure --> Err([Abort: Authentication Error])
-    Auth -- Success --> Fetch[Fetch Client ID & Master Records]
+    Auth -- Success --> Fetch[Fetch Client ID via API]
     
-    Fetch --> T[Download Tickets Dump]
-    T --> I[Download Finance Ageing]
-    I --> R[Download Retention Status]
+    Fetch --> T[GET Tickets JSON]
+    T --> I[GET Finance Ageing JSON]
+    I --> R[GET Retention JSON]
     
     R --> Merge{All Data Downloaded?}
     
@@ -59,7 +59,7 @@ flowchart TD
     Pandas --> Charts[Render Matplotlib PNGs]
     Charts --> Inject[Inject Data & Charts into Base PPTX]
     Inject --> Save[Save Final PPTX Document]
-    Save --> Cleanup[Delete Local Excel Dumps & PNGs]
+    Save --> Cleanup[Delete Local Cache & PNGs]
     Cleanup --> End([Job Completed Successfully])
 ```
 
@@ -68,17 +68,15 @@ flowchart TD
 2. Install project dependencies:
    ```bash
    pip install -r backend/requirements.txt
-   playwright install chromium
    ```
 3. Configure your production environment (`.env`):
    ```env
-   CRM_URL=http://27.54.160.8/devops/uatPortal
-   CRM_USERNAME=your_username
-   CRM_PASSWORD=your_password
+   CRM_API_URL=http://27.54.160.8/devops/uatPortal/api
+   CRM_API_TOKEN=your_secure_token
    ```
 
 ## 🏃‍♂️ Usage
-Trigger the fully automated pipeline for a specific client and billing month. The engine will authenticate, scrape the required data, process it, and output the final document.
+Trigger the fully automated pipeline for a specific client and billing month. The engine will authenticate, extract data via API, process it, and output the final document.
 ```bash
 python backend/main.py --production --customer "M/s. Picson Construction Equipments Pvt. Ltd." --month "2026-08" --user "Shah.Manank"
 ```
@@ -89,10 +87,10 @@ The pipeline strictly maps dynamic CRM endpoints to specific PowerPoint slide te
 | Slide Content | CRM Data Source | Python Processor Pipeline |
 | :--- | :--- | :--- |
 | **Customer Service** | Active Services JSON API | `process_inventory.py` |
-| **Ticket Analytics** | Help Desk `All Complain` Excel Dump | `raw_ticket_processor.py` |
+| **Ticket Analytics** | Help Desk REST API | `raw_ticket_processor.py` |
 | **SLA Resolution** | Incident RFO & Close Date Engine | `process_sla.py` |
-| **Invoice Pendency** | Finance `Client Ageing` JSON/Excel | `process_invoice.py` |
-| **Retention Metrics** | Client Retention Stage Data | `process_retention.py` |
+| **Invoice Pendency** | Finance `Client Ageing` API | `process_invoice.py` |
+| **Retention Metrics** | Client Retention Stage API | `process_retention.py` |
 
 *Note: Comprehensive field-level technical mappings between the exact CRM JSON endpoints and the PowerPoint placeholder variables are securely documented in the `/Slide_Mappings` directory.*
 
@@ -100,7 +98,7 @@ The pipeline strictly maps dynamic CRM endpoints to specific PowerPoint slide te
 
 ## 🏷️ Project Domain & Classification
 This project spans several high-demand enterprise software domains:
-* **Robotic Process Automation (RPA):** Automates human browser interactions to securely extract data from legacy CRM systems.
+* **API Integration & Microservices:** Authenticates and securely interfaces with live internal REST APIs to extract highly relational business data.
 * **Data Engineering & Processing:** Utilizes `pandas` to clean, transform, and aggregate thousands of rows of raw financial and technical data into mathematical metrics.
 * **Document Automation:** Programmatically manipulates binary `.pptx` XML structures to generate dynamic, presentation-ready business reports.
 * **Full-Stack Development:** Orchestrates backend Python pipelines with an optional React/TypeScript dashboard interface.
