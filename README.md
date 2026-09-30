@@ -38,6 +38,35 @@ graph TD
     end
 ```
 
+## 🔄 Activity Flow Diagram
+```mermaid
+flowchart TD
+    Start([Start Generation Job]) --> Auth{Authenticate CRM?}
+    
+    Auth -- Failure --> Err([Abort: Authentication Error])
+    Auth -- Success --> Fetch[Fetch Client ID & Master Records]
+    
+    Fetch --> ParallelSplit{Execute Parallel Downloads}
+    
+    ParallelSplit --> T[Download Tickets Dump]
+    ParallelSplit --> I[Download Finance Ageing]
+    ParallelSplit --> R[Download Retention Status]
+    
+    T --> Merge
+    I --> Merge
+    R --> Merge
+    
+    Merge{All Data Downloaded?} --> |Missing Data| Fallback[Inject Empty DataFrames to Prevent Crash]
+    Merge --> |Success| Pandas[Pandas: Calculate SLAs & Group By Logic]
+    Fallback --> Pandas
+    
+    Pandas --> Charts[Render Matplotlib PNGs]
+    Charts --> Inject[Inject Data & Charts into Base PPTX]
+    Inject --> Save[Save Final PPTX Document]
+    Save --> Cleanup[Delete Local Excel Dumps & PNGs]
+    Cleanup --> End([Job Completed Successfully])
+```
+
 ## ⚙️ Installation & Configuration
 1. **Install Python 3.10+**
 2. Install project dependencies:
