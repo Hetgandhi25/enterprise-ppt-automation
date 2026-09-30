@@ -1,133 +1,72 @@
-# Enterprise PPT Automation Platform
+# Enterprise CRM PowerPoint Automation Platform
 
-A production-ready enterprise application for automating the generation of Service Review PowerPoint presentations. The platform extracts data via an automated CRM browser session, processes and aggregates Excel reports, generates publication-quality Matplotlib charts, and strictly maps data into an existing PowerPoint template.
+> An enterprise-grade Python automation pipeline that dynamically extracts live CRM data, calculates SLAs via Pandas, and generates publication-ready PowerPoint presentations for executive Service Reviews.
 
-## Tech Stack
-* **Core Language:** Python 3.10+
-* **Data Processing & Analytics:** `pandas` (for SLA math & dataframe aggregation)
-* **Data Visualization:** `matplotlib` (for dynamic chart rendering)
-* **Document Generation:** `python-pptx` (for injecting data directly into native PPTX tables/shapes)
-* **Web Scraping / Browser Automation:** `requests` & `playwright` (for navigating CRM portals)
-* **Frontend Dashboard (Optional UI):** React 18, TypeScript, Vite, Tailwind CSS
+## 🚀 Project Impact
+- **Automates** manual CRM data extraction, cleaning, and SLA calculations.
+- **Eliminates** human error in financial ageing and technical ticket resolution reporting.
+- **Generates** complete, native `.pptx` documents with embedded data and perfectly scaled Matplotlib charts in seconds.
 
-## Architecture Flow
+## 💻 Tech Stack
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Core Language** | `Python 3.10+` | Backbone of the data processing pipeline |
+| **Data Processing** | `pandas` | Financial aggregation & SLA mathematics |
+| **Visualization** | `matplotlib` | Dynamic generation of trend charts & graphics |
+| **Document Engine**| `python-pptx` | Native PowerPoint manipulation & shape generation |
+| **Browser Automation**| `Playwright` & `requests` | Headless CRM navigation & secure API extraction |
+| **Frontend UI** | `React 18`, `TypeScript` | Dashboard for triggering & monitoring generation jobs |
 
-The system orchestrates operations via dependency injection in `PPTAutomationPipeline`, decoupling browser automation from data processing and chart generation.
-
+## 🏗️ System Architecture
 ```mermaid
 graph TD
-    CLI(CLI/main.py) --> Config(AppConfig / CredentialManager)
-    Config --> Factory(CRMAdapterFactory)
-    Factory --> Adapter{CRM Adapter}
-    
-    Adapter -->|Demo Mode| MockAdapter[Mock CRM Adapter]
-    Adapter -->|Production Mode| RealAdapter[Real CRM Adapter]
-    
-    MockAdapter --> Browser[Portal Client / Playwright]
-    RealAdapter --> Browser
-    
-    Browser --> Downloads[Download Manager]
-    Downloads --> Processors[Excel Processors]
-    Processors --> Charts[Chart Engine]
-    Processors --> PPT[PPT Engine]
-    Charts --> PPT
-    PPT --> Output[Final Presentation]
-    Output --> Cleanup[Job Cleaner]
+    subgraph Input [Data Ingestion]
+        CLI[Command Line / UI] --> Config[Credential Manager]
+        Config --> CRM[Live UAT CRM Platform]
+        CRM -->|Headless Scrape & APIs| Downloader[Data Extractor]
+    end
+
+    subgraph Processing [Data Pipeline]
+        Downloader --> Pandas[Pandas DataFrame Engine]
+        Pandas -->|SLA & Metrics Math| Charts[Matplotlib Generator]
+    end
+
+    subgraph Output [Document Generation]
+        Pandas --> PPT[python-pptx Engine]
+        Charts --> PPT
+        PPT --> PPTX(Final ServiceReview.pptx)
+    end
 ```
 
-## Business Workflow (Data Pipeline)
-```mermaid
-sequenceDiagram
-    participant CSM as CRM System (UAT)
-    participant Engine as Automation Engine
-    participant Pandas as Data Processor
-    participant PPT as Template Engine
-    
-    Engine->>CSM: Authenticate via API/Browser
-    CSM-->>Engine: Customer List & Session Token
-    Engine->>CSM: Request Tickets, Invoices, Retention
-    CSM-->>Engine: Raw Excel / JSON Downloads
-    Engine->>Pandas: Load Data into DataFrames
-    Pandas-->>Pandas: Calculate SLA & Ageing Math
-    Pandas->>Engine: Aggregated Metrics
-    Engine->>PPT: Inject Variables & Save Charts
-    PPT-->>PPT: Generate Final .pptx
-    PPT-->>Engine: Completed Document
-```
+## ⚙️ Installation & Configuration
+1. **Install Python 3.10+**
+2. Install project dependencies:
+   ```bash
+   pip install -r backend/requirements.txt
+   playwright install chromium
+   ```
+3. Configure your production environment (`.env`):
+   ```env
+   CRM_URL=http://27.54.160.8/devops/uatPortal
+   CRM_USERNAME=your_username
+   CRM_PASSWORD=your_password
+   ```
 
-## Folder Structure
-```text
-CustPPTAutomation/
-├── backend/
-│   ├── main.py                    # CLI Entrypoint
-│   ├── config/                    # Configuration, Flags, Credentials
-│   ├── automation/                # Playwright framework & CRM Adapters
-│   ├── processors/                # Excel validation & data processing
-│   ├── charts/                    # Matplotlib chart engine
-│   ├── ppt/                       # python-pptx presentation generation
-│   ├── services/                  # Orchestration (Pipeline, Metrics, Job Manager)
-│   ├── utils/                     # Logging, Exceptions
-│   ├── tests/                     # Unit Tests & Fixtures
-│   ├── logs/                      # Screenshots & App Logs
-│   ├── output/                    # Downloads, Charts, and Presentations
-│   └── templates/                 # Base ServiceReview.pptx
-├── .env                           # Environment Variables (Not Committed)
-├── README.md
-└── requirements.txt
-```
-
-## Installation
-1. Install Python 3.10+
-2. `pip install -r backend/requirements.txt`
-3. `playwright install chromium`
-4. Copy `.env.example` to `.env` (if provided) and fill required values for Production mode.
-
-## Configuration (.env)
-```env
-CRM_URL=https://real-crm.example.com
-CRM_USERNAME=your_username
-CRM_PASSWORD=your_password
-DOWNLOAD_PATH=output/downloads
-OUTPUT_PATH=output/presentations
-HEADLESS=true
-TIMEOUT=30000
-RETRY_COUNT=3
-
-# Feature Flags
-ENABLE_DOWNLOAD=true
-ENABLE_SCREENSHOTS=true
-ENABLE_CLEANUP=true
-```
-
-## Usage (CLI)
-
-The `main.py` entrypoint requires either `--demo` or `--production` mode.
-
-### Demo Mode (Recommended for testing)
-Runs the entire pipeline instantly without requiring actual CRM credentials. Uses static dummy data specifically engineered for the `Picson` customer to perfectly populate charts and tables.
-```bash
-python backend/main.py --demo --customer "Picson" --month "2026-08"
-```
-
-### Production Mode
-Runs the pipeline against the live CRM. Requires valid Ishan CRM credentials configured in your environment variables.
+## 🏃‍♂️ Usage
+Trigger the fully automated pipeline for a specific client and billing month. The engine will authenticate, scrape the required data, process it, and output the final document.
 ```bash
 python backend/main.py --production --customer "M/s. Picson Construction Equipments Pvt. Ltd." --month "2026-08" --user "Shah.Manank"
 ```
 
-*Optional flags:*
-- `--output ./custom_folder` (Overrides default output path)
+## 📊 CRM to Slide Mapping Strategy
+The pipeline strictly maps dynamic CRM endpoints to specific PowerPoint slide templates.
 
-## Documentation & Slide Mappings
-The system has been heavily audited against the live CRM. For a complete 1:1 mapping of exactly which backend CRM endpoints and UI columns generate each PPT slide (including the exact SLA calculations for Slide 8 and Invoice mappings for Slide 12), please see the internal `/Slide_Mappings` folder or the `PPT_Automation_Mapping_Documentation.md`.
+| Slide Content | CRM Data Source | Python Processor Pipeline |
+| :--- | :--- | :--- |
+| **Customer Service** | Active Services JSON API | `process_inventory.py` |
+| **Ticket Analytics** | Help Desk `All Complain` Excel Dump | `raw_ticket_processor.py` |
+| **SLA Resolution** | Incident RFO & Close Date Engine | `process_sla.py` |
+| **Invoice Pendency** | Finance `Client Ageing` JSON/Excel | `process_invoice.py` |
+| **Retention Metrics** | Client Retention Stage Data | `process_retention.py` |
 
-## Transitioning to Production
-
-When you are ready to integrate the real CRM:
-1. Open `backend/config/portal.json` and replace the placeholder CSS/XPath selectors with the actual CRM selectors.
-2. Open `backend/automation/real_crm_adapter.py`.
-3. Implement the `open_dashboard`, `select_customer`, and `download_*` methods. Remove the `NotImplementedError` raises.
-4. Set `APP_MODE=production` in your environment (or use `--production`).
-5. Fill your `.env` with actual `CRM_USERNAME` and `CRM_PASSWORD`.
-
-The `AdapterFactory` will automatically inject `RealCRMAdapter` and execute the pipeline!
+*Note: Comprehensive field-level technical mappings between the exact CRM JSON endpoints and the PowerPoint placeholder variables are securely documented in the `/Slide_Mappings` directory.*
