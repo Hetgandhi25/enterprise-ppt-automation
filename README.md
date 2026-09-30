@@ -1,16 +1,16 @@
-# Enterprise CRM PowerPoint Automation Platform
+# Enterprise MBR Automation Engine
 
-> An enterprise-grade Python automation pipeline that dynamically extracts live CRM data, calculates SLAs via Pandas, and generates publication-ready PowerPoint presentations for executive Service Reviews.
+> An end-to-end MBR (Monthly Business Review) Automation Engine built with Python, FastAPI, Pandas, python-pptx, and React. It dynamically extracts live CRM data to automate SLA, invoice ageing, inventory, and outage analysis.
 
 ## 🚀 Project Impact
-- **Automates** manual CRM data extraction, cleaning, and SLA calculations.
-- **Eliminates** human error in financial ageing and technical ticket resolution reporting.
-- **Generates** complete, native `.pptx` documents with embedded data and perfectly scaled Matplotlib charts in seconds.
+- **Automates** complex CRM-based SLA math, invoice ageing, inventory tracking, and technical outage analysis.
+- **Accelerates** workflow efficiency by reducing comprehensive MBR report generation from hours of manual labor to **<10 seconds** per client.
+- **Generates** complete, native `.pptx` documents with embedded data and perfectly scaled Matplotlib charts.
 
 ## 💻 Tech Stack
 | Layer | Technology | Purpose |
 | :--- | :--- | :--- |
-| **Core Language** | `Python 3.10+` | Backbone of the data processing pipeline |
+| **Core API & Logic** | `Python 3.10+`, `FastAPI` | Backbone of the data processing pipeline and REST API |
 | **Data Processing** | `pandas` | Financial aggregation & SLA mathematics |
 | **Visualization** | `matplotlib` | Dynamic generation of trend charts & graphics |
 | **Document Engine**| `python-pptx` | Native PowerPoint manipulation & shape generation |
