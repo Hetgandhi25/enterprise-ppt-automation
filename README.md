@@ -46,17 +46,13 @@ flowchart TD
     Auth -- Failure --> Err([Abort: Authentication Error])
     Auth -- Success --> Fetch[Fetch Client ID & Master Records]
     
-    Fetch --> ParallelSplit{Execute Parallel Downloads}
+    Fetch --> T[Download Tickets Dump]
+    T --> I[Download Finance Ageing]
+    I --> R[Download Retention Status]
     
-    ParallelSplit --> T[Download Tickets Dump]
-    ParallelSplit --> I[Download Finance Ageing]
-    ParallelSplit --> R[Download Retention Status]
+    R --> Merge{All Data Downloaded?}
     
-    T --> Merge
-    I --> Merge
-    R --> Merge
-    
-    Merge{All Data Downloaded?} --> |Missing Data| Fallback[Inject Empty DataFrames to Prevent Crash]
+    Merge --> |Missing Data| Fallback[Inject Empty DataFrames to Prevent Crash]
     Merge --> |Success| Pandas[Pandas: Calculate SLAs & Group By Logic]
     Fallback --> Pandas
     
